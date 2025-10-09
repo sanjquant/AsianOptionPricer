@@ -4,9 +4,9 @@
 
 
  ## Goal
-	# Model Assumptions.
-        # Inputs & Parameters (asian_price_mc)
-	# How to Run (example)
+	A. Model Assumptions.
+    B.  Inputs & Parameters (asian_price_mc)
+	C. How to Run (example)
 
 1. Model Assumptions : 
              $ Risk neutral GBM with constant parameters: dS/D = (r-q)*dt + σ *dW
