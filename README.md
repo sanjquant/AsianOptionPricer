@@ -48,20 +48,23 @@
 			### python
 			from asian_option_pricer import asian_price_mc
 
-			# Unseasoned, fixed‑strike call
-			resA = asian_price_mc(S0=100, K=100, r=0.03, q=0.01, sigma=0.22,
-								  T=1.0, N=12, call_put="call", strike_type="fixed",
-								  n_paths=200_000, seed=123, antithetic=True,
-								  observed_fixings=None, use_geometric_cv=True)
+			# Example 1: Unseasoned fixed-strike call
+			resA = asian_price_mc(spot=100, strike=100, r=0.03, q=0.00, sigma=0.20, T=0.5, N=12,option_type="call", strike_type="fixed", paths=200_000, seed=7)
 			print(resA)
 
-			# Seasoned, floating‑strike put (8 weekly fixings; first 6 observed)
-			obs = {0:97.20, 1:96.10, 2:94.80, 3:95.40, 4:93.90, 5:92.70}
-			resB = asian_price_mc(S0=95, K=None, r=0.0225, q=0.005, sigma=0.28,
-								  T=8/52, N=8, call_put="put", strike_type="floating",
-								  n_paths=200_000, seed=321, antithetic=True,
-								  observed_fixings=obs, use_geometric_cv=True)
+			#  Example 2: Seasoned floating-strike put)
+			obs = [98.2, 99.0, 101.3, 100.7]  # observed fixings
+			resB =  asian_price_mc(spot=100, r=0.02, q=0.01, sigma=0.25, T=1.0, N=24, option_type="put", paths=250_000, seed=11, observed_fixings=obs)
 			print(resB)
+
+			# Example 3: N=1 sanity vs Black–Scholes (fixed-strike)
+
+			resC =  asian_price_mc(spot=100, strike=100, r=0.01, q=0.00, sigma=0.18, T=1.0, N=1, option_type="call", strike_type="fixed", paths=300_000, seed=99)
+			bs = black_scholes_call(100, 100, 0.01, 0.00, 0.18, 1.0)
+			print("=== Vanilla Cross-Check ===")
+			print(f"MC={resC.price:.6f} vs BS={bs:.6f} (diff={resC.price - bs:.6f})")
+
+
 	
 4. known limitations and constains in the model.
 			a. Equal spacing only no business-day calendars or holidays.
